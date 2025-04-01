@@ -300,6 +300,9 @@ public class FitnessTrackingApp extends Application {
 
     private void showForgotPasswordPage() {
         VBox forgotPasswordLayout = createPage("Forgot Password Page");
+
+
+
         Scene forgotPasswordScene = new Scene(forgotPasswordLayout, 600, 800);
         primaryStage.setScene(forgotPasswordScene);
     }
@@ -408,23 +411,16 @@ public class FitnessTrackingApp extends Application {
         Label birthdayLabel = new Label("Birthday");
         TextField birthdayField = new TextField();
         Label genderLabel = new Label("Gender");
-        ComboBox genderBox = new ComboBox();
+        ComboBox<String> genderBox = new ComboBox<>();
+        genderBox.getItems().addAll("Female", "Male", "Others");
         Label heightLabel = new Label("Height (cm)");
         TextField heightField = new TextField();
         Label weightLabel = new Label("Weight (lb)");
         TextField weightField = new TextField();
         Label fitnessGoalsLabel = new Label("Fitness Goals");
-        ComboBox fitnessGoalsBox = new ComboBox();
-
-        String username = ThisUser.getInstance().getCurrentUsername();
-        String name = nameField.getText();
-        String birthday = birthdayField.getText();
-        String gender = genderBox.getSelectionModel().getSelectedItem().toString();
-        String height = heightField.getText();
-        String weight = weightField.getText();
-        String fitnessGoals = fitnessGoalsBox.getSelectionModel().getSelectedItem().toString();
-
-
+        ComboBox<String> fitnessGoalsBox = new ComboBox<>();
+        fitnessGoalsBox.getItems().addAll("Weight Loss", "Strength Training", "Balanced");
+        Button updateBtn = new Button("Update");
 
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
@@ -442,10 +438,34 @@ public class FitnessTrackingApp extends Application {
         weightLine.setAlignment(Pos.CENTER);
         HBox fitnessGoalsLine = new HBox(10, fitnessGoalsLabel, fitnessGoalsBox);
         fitnessGoalsLine.setAlignment(Pos.CENTER);
+        HBox updateBtnLine = new HBox(10, updateBtn);
+        updateBtnLine.setAlignment(Pos.CENTER);
 
         layout.getChildren().addAll(
-                logo, nameLine, birthdayLine, genderLine, heightLine, weightLine, fitnessGoalsLine
+                logo, nameLine, birthdayLine, genderLine, heightLine, weightLine, fitnessGoalsLine, updateBtnLine
         );
+
+        try {
+            LoginDAO loginDAO = new LoginDAO();
+            String username = ThisUser.getInstance().getCurrentUsername();
+            loginDAO.retrieveEnthusiastProfile(nameField, birthdayField, genderBox, heightField, weightField,
+                    fitnessGoalsBox, username);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        updateBtn.setOnAction(e ->{
+            try{
+                LoginDAO loginDAO = new LoginDAO();
+                loginDAO.updateEnthusiastProfile(nameField.getText(), birthdayField.getText(),
+                        genderBox.getSelectionModel().getSelectedItem(), Double.parseDouble(heightField.getText()),
+                        Double.parseDouble(weightField.getText()), fitnessGoalsBox.getSelectionModel().getSelectedItem(),
+                        ThisUser.getInstance().getCurrentUsername());
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        });
 
         Scene ProfileManagementUserScene = new Scene(ProfileManagementUserLayout, 600, 800);
         primaryStage.setScene(ProfileManagementUserScene);
