@@ -1,3 +1,5 @@
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.Properties;
@@ -170,7 +172,7 @@ public class LoginDAO {
     }
 
     public void updateEnthusiastProfile (String name, String birthday, String gender, double height, double weight,
-                                String fitnessGoals) {
+                                String fitnessGoals, String username) {
         String query = "UPDATE enthusiast SET name=?, birthday=?, gender=?, height=?, weight=?, fitnessgoals=? where username=?";
         try(PreparedStatement Stmt = connection.prepareStatement(query)){
             Stmt.setString(1, name);
@@ -180,6 +182,26 @@ public class LoginDAO {
             Stmt.setDouble(5, weight);
             Stmt.setString(6, fitnessGoals);
             Stmt.setString(7, ThisUser.getInstance().getCurrentUsername());
+            Stmt.executeUpdate();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void retrieveEnthusiastProfile (TextField nameField, TextField birthdayField, ComboBox<String> genderBox,
+                                           TextField heightField, TextField weightField, ComboBox<String> fitnessGoalsBox, String username) {
+        String query = "SELECT * FROM Enthusiast WHERE username=?";
+        try(PreparedStatement Stmt = connection.prepareStatement(query)){
+            Stmt.setString(1, ThisUser.getInstance().getCurrentUsername());
+            ResultSet rs = Stmt.executeQuery();
+            if(rs.next()){
+                nameField.setText(rs.getString("fullname"));
+                birthdayField.setText(rs.getString("birthday"));
+                genderBox.setValue(rs.getString("gender"));
+                heightField.setText(rs.getString("height"));
+                weightField.setText(rs.getString("weight"));
+                fitnessGoalsBox.setValue(rs.getString("fitnessgoals"));
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
