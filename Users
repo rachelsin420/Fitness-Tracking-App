@@ -1,8 +1,15 @@
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class Users {
     private String username;
     private String password;
+    private String name;
+    private Date birthday;
+    private String gender;
+    private double height;
+    private double weight;
+    private String fitnessGoals;
 
     public Users(String username, String password) {
         this.username = username;
@@ -30,6 +37,42 @@ public class Users {
             throw new IllegalArgumentException("Invalid password.");
         }
         this.password = password;
+    }
+    public String getName(String name){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+    public Date getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    public double getHeight() {
+        return height;
+    }
+    public void setHeight(double height) {
+        this.height = height;
+    }
+    public double getWeight() {
+        return weight;
+    }
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+    public String getFitnessGoals() {
+        return fitnessGoals;
+    }
+    public void setFitnessGoals(String fitnessGoals) {
+        this.fitnessGoals = fitnessGoals;
     }
 
     private boolean isValidPassword(String password) {
