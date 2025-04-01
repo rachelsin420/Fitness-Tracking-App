@@ -168,4 +168,20 @@ public class LoginDAO {
        }
        return true;
     }
+
+    public void updateEnthusiastProfile (String name, String birthday, String gender, double height, double weight,
+                                String fitnessGoals) {
+        String query = "UPDATE enthusiast SET name=?, birthday=?, gender=?, height=?, weight=?, fitnessgoals=? where username=?";
+        try(PreparedStatement Stmt = connection.prepareStatement(query)){
+            Stmt.setString(1, name);
+            Stmt.setString(2, birthday);
+            Stmt.setString(3, gender);
+            Stmt.setDouble(4, height);
+            Stmt.setDouble(5, weight);
+            Stmt.setString(6, fitnessGoals);
+            Stmt.setString(7, ThisUser.getInstance().getCurrentUsername());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     }
