@@ -10,8 +10,6 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
-/* new changes */
-
 public class FitnessTrackingApp extends Application {
 
     private Stage primaryStage;
