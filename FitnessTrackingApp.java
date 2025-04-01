@@ -10,6 +10,8 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
+import java.util.Date;
+
 public class FitnessTrackingApp extends Application {
 
     private Stage primaryStage;
@@ -398,6 +400,53 @@ public class FitnessTrackingApp extends Application {
 
     private void showProfileManagementUserPage() {
         VBox ProfileManagementUserLayout = createPage("Profile Management");
+        Label logo = new Label("Fitness Tracking App");
+        logo.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label nameLabel = new Label("Full Name");
+        TextField nameField = new TextField();
+        Label birthdayLabel = new Label("Birthday");
+        TextField birthdayField = new TextField();
+        Label genderLabel = new Label("Gender");
+        ComboBox genderBox = new ComboBox();
+        Label heightLabel = new Label("Height (cm)");
+        TextField heightField = new TextField();
+        Label weightLabel = new Label("Weight (lb)");
+        TextField weightField = new TextField();
+        Label fitnessGoalsLabel = new Label("Fitness Goals");
+        ComboBox fitnessGoalsBox = new ComboBox();
+
+        String username = ThisUser.getInstance().getCurrentUsername();
+        String name = nameField.getText();
+        String birthday = birthdayField.getText();
+        String gender = genderBox.getSelectionModel().getSelectedItem().toString();
+        String height = heightField.getText();
+        String weight = weightField.getText();
+        String fitnessGoals = fitnessGoalsBox.getSelectionModel().getSelectedItem().toString();
+
+
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(20));
+
+        HBox nameLine = new HBox(10, nameLabel, nameField);
+        nameLine.setAlignment(Pos.CENTER);
+        HBox birthdayLine = new HBox(10, birthdayLabel, birthdayField);
+        birthdayLine.setAlignment(Pos.CENTER);
+        HBox genderLine = new HBox(10, genderLabel, genderBox);
+        genderLine.setAlignment(Pos.CENTER);
+        HBox heightLine = new HBox(10, heightLabel, heightField);
+        heightLine.setAlignment(Pos.CENTER);
+        HBox weightLine = new HBox(10, weightLabel, weightField);
+        weightLine.setAlignment(Pos.CENTER);
+        HBox fitnessGoalsLine = new HBox(10, fitnessGoalsLabel, fitnessGoalsBox);
+        fitnessGoalsLine.setAlignment(Pos.CENTER);
+
+        layout.getChildren().addAll(
+                logo, nameLine, birthdayLine, genderLine, heightLine, weightLine, fitnessGoalsLine
+        );
+
         Scene ProfileManagementUserScene = new Scene(ProfileManagementUserLayout, 600, 800);
         primaryStage.setScene(ProfileManagementUserScene);
     }
