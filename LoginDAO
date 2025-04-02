@@ -180,7 +180,7 @@ public class LoginDAO {
         return true;
     }
 
-    public void updateEnthusiastProfile(String name, String birthday, String gender, double height, double weight,
+    public boolean updateEnthusiastProfile(String name, String birthday, String gender, double height, double weight,
                                         String fitnessGoals, String username) {
         String query = "UPDATE enthusiast SET name=?, birthday=?, gender=?, height=?, weight=?, fitnessgoals=? where username=?";
         try (PreparedStatement Stmt = connection.prepareStatement(query)) {
@@ -192,9 +192,11 @@ public class LoginDAO {
             Stmt.setString(6, fitnessGoals);
             Stmt.setString(7, ThisUser.getInstance().getCurrentUsername());
             Stmt.executeUpdate();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public void retrieveEnthusiastProfile(TextField nameField, TextField birthdayField, ComboBox<String> genderBox,
