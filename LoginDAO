@@ -7,19 +7,17 @@ public class LoginDAO {
     private static Connection connection;
 
     public LoginDAO() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("org.sqlite.JDBC");
 
-        String user = "root";
-        String password = "root.123@";
-        String dburl = "jdbc:mysql://127.0.0.1:3306";
+        String dburl = "jdbc:sqlite:resources/FitnessTrackingApp.db";
 
-        connection = DriverManager.getConnection(dburl, user, password);
+        connection = DriverManager.getConnection(dburl);
 
         System.out.println("DB connection successful to: " + dburl);
     }
 
     public boolean validateEnthusiast (String username, String password) {
-        String query = "SELECT * FROM fitness.enthusiast WHERE username=? AND password=?";
+        String query = "SELECT * FROM enthusiast WHERE username=? AND password=?";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             ps.setString(2, password);
@@ -35,7 +33,7 @@ public class LoginDAO {
     }
 
     public boolean validateTrainer (String username, String password) {
-        String query = "SELECT * FROM fitness.trainers WHERE username=? AND password=?";
+        String query = "SELECT * FROM trainers WHERE username=? AND password=?";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             ps.setString(2, password);
@@ -51,7 +49,7 @@ public class LoginDAO {
     }
 
     public boolean validateAdmins (String username, String password) {
-        String query = "SELECT * FROM fitness.admins WHERE username=? AND password=?";
+        String query = "SELECT * FROM admins WHERE username=? AND password=?";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             ps.setString(2, password);
@@ -67,7 +65,7 @@ public class LoginDAO {
     }
 
     public void createEnthusiast (Users enthusiast) {
-        String query = "INSERT INTO fitness.enthusiast (username, password) values (?, ?)";
+        String query = "INSERT INTO enthusiast (username, password) values (?, ?)";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, enthusiast.getUsername());
             ps.setString(2, enthusiast.getPassword());
@@ -78,7 +76,7 @@ public class LoginDAO {
     }
 
     public void createTrainer (Users trainer) {
-        String query = "INSERT INTO fitness.trainers (username, password) values (?, ?)";
+        String query = "INSERT INTO trainers (username, password) values (?, ?)";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, trainer.getUsername());
             ps.setString(2, trainer.getPassword());
@@ -89,7 +87,7 @@ public class LoginDAO {
     }
 
     public void createAdmin (Users admin) {
-        String query = "INSERT INTO fitness.admins (username, password) values (?, ?)";
+        String query = "INSERT INTO admins (username, password) values (?, ?)";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, admin.getUsername());
             ps.setString(2, admin.getPassword());
@@ -100,7 +98,7 @@ public class LoginDAO {
     }
 
     public boolean duplicateEnthusiast (String username) {
-        String query = "SELECT * FROM fitness.enthusiast WHERE username=?";
+        String query = "SELECT * FROM enthusiast WHERE username=?";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             try(ResultSet rs = ps.executeQuery()) {
@@ -115,7 +113,7 @@ public class LoginDAO {
     }
 
     public boolean duplicateTrainer (String username) {
-        String query = "SELECT * FROM fitness.trainers WHERE username=?";
+        String query = "SELECT * FROM trainers WHERE username=?";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             try(ResultSet rs = ps.executeQuery()) {
@@ -130,7 +128,7 @@ public class LoginDAO {
     }
 
     public boolean duplicateAdmin (String username) {
-        String query = "SELECT * FROM fitness.admins WHERE username=?";
+        String query = "SELECT * FROM admins WHERE username=?";
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             try(ResultSet rs = ps.executeQuery()) {
