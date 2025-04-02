@@ -397,6 +397,7 @@ public class FitnessTrackingApp extends Application {
                             alert.setHeaderText(null);
                             alert.setContentText("Password changed successfully");
                             alert.showAndWait();
+                            showHomePage();
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Error");
@@ -513,10 +514,25 @@ public class FitnessTrackingApp extends Application {
         updateBtn.setOnAction(e -> {
             try{
                 LoginDAO loginDAO = new LoginDAO();
-                loginDAO.updateEnthusiastProfile(nameField.getText(), birthdayField.getText(),
+                boolean successful = loginDAO.updateEnthusiastProfile(nameField.getText(), birthdayField.getText(),
                         genderBox.getSelectionModel().getSelectedItem(), Double.parseDouble(heightField.getText()),
                         Double.parseDouble(weightField.getText()), fitnessGoalsBox.getSelectionModel().getSelectedItem(),
                         ThisUser.getInstance().getCurrentUsername());
+                if (successful) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Profile Updated successfully");
+                    alert.showAndWait();
+                    showProfileManagementUserPage();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Profile Update failed");
+                    alert.showAndWait();
+                }
+
             } catch (Exception ex){
                 ex.printStackTrace();
             }
