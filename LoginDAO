@@ -1,3 +1,4 @@
+
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import java.sql.*;
@@ -180,7 +181,7 @@ public class LoginDAO {
         return true;
     }
 
-    public boolean updateEnthusiastProfile(String name, String birthday, String gender, double height, double weight,
+    public void updateEnthusiastProfile(String name, String birthday, String gender, double height, double weight,
                                         String fitnessGoals, String username) {
         String query = "UPDATE enthusiast SET name=?, birthday=?, gender=?, height=?, weight=?, fitnessgoals=? where username=?";
         try (PreparedStatement Stmt = connection.prepareStatement(query)) {
@@ -192,11 +193,9 @@ public class LoginDAO {
             Stmt.setString(6, fitnessGoals);
             Stmt.setString(7, ThisUser.getInstance().getCurrentUsername());
             Stmt.executeUpdate();
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public void retrieveEnthusiastProfile(TextField nameField, TextField birthdayField, ComboBox<String> genderBox,
@@ -219,6 +218,11 @@ public class LoginDAO {
     }
 
     public boolean forgetPassword(String username, String birthday, String password) {
+        if(username == null || username.isEmpty()||
+                birthday == null || birthday.isEmpty()||
+                password == null || password.isEmpty()){
+            throw new IllegalArgumentException("Username or Birthday or Password is empty");
+        }
         String[] tables = {"enthusiast", "trainers", "admins"};
         boolean isUpdated = false;
         for (String table : tables) {
