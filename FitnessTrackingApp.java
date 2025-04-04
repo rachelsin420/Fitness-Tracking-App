@@ -102,6 +102,11 @@ public class FitnessTrackingApp extends Application {
             String newPassword = passwordField.getText();
 
             if(newUsername == null || newPassword == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid username or password");
+                alert.showAndWait();
                 System.out.println("Username or Password cannot be empty");
                 return;
             }
@@ -1160,6 +1165,7 @@ public class FitnessTrackingApp extends Application {
 
     private VBox createPage(String pageTitle) {
         StackPane backButton = createBackButton();
+        backButton.setOnMouseClicked(e -> showHomePage());
 
         Label pageLabel = new Label(pageTitle);
         pageLabel.setStyle("-fx-font-size: 20px;");
